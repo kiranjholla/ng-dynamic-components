@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { NgDynamicComponentsComponent } from './ng-dynamic-components.component';
+import { ComponentOutletComponent } from './components/component-outlet/component-outlet.component';
 
 @NgModule({
-  declarations: [NgDynamicComponentsComponent],
+  declarations: [ComponentOutletComponent],
   imports: [],
-  exports: [NgDynamicComponentsComponent]
+  exports: [ComponentOutletComponent]
 })
 export class NgDynamicComponentsModule {}
