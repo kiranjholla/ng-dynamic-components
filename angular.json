@@ -1,0 +1,168 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "dynamic-test-app": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/dynamic-test-app",
+      "sourceRoot": "projects/dynamic-test-app/src",
+      "prefix": "dta",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/dynamic-test-app",
+            "index": "projects/dynamic-test-app/src/index.html",
+            "main": "projects/dynamic-test-app/src/main.ts",
+            "polyfills": "projects/dynamic-test-app/src/polyfills.ts",
+            "tsConfig": "projects/dynamic-test-app/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/dynamic-test-app/src/favicon.ico",
+              "projects/dynamic-test-app/src/assets"
+            ],
+            "styles": [
+              "projects/dynamic-test-app/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/dynamic-test-app/src/environments/environment.ts",
+                  "with": "projects/dynamic-test-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "dynamic-test-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "dynamic-test-app:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "dynamic-test-app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/dynamic-test-app/src/test.ts",
+            "polyfills": "projects/dynamic-test-app/src/polyfills.ts",
+            "tsConfig": "projects/dynamic-test-app/tsconfig.spec.json",
+            "karmaConfig": "projects/dynamic-test-app/karma.conf.js",
+            "assets": [
+              "projects/dynamic-test-app/src/favicon.ico",
+              "projects/dynamic-test-app/src/assets"
+            ],
+            "styles": [
+              "projects/dynamic-test-app/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/dynamic-test-app/tsconfig.app.json",
+              "projects/dynamic-test-app/tsconfig.spec.json",
+              "projects/dynamic-test-app/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/dynamic-test-app/e2e/protractor.conf.js",
+            "devServerTarget": "dynamic-test-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "dynamic-test-app:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "ng-dynamic-components": {
+      "projectType": "library",
+      "root": "projects/ng-dynamic-components",
+      "sourceRoot": "projects/ng-dynamic-components/src",
+      "prefix": "ndc",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/ng-dynamic-components/tsconfig.lib.json",
+            "project": "projects/ng-dynamic-components/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ng-dynamic-components/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ng-dynamic-components/src/test.ts",
+            "tsConfig": "projects/ng-dynamic-components/tsconfig.spec.json",
+            "karmaConfig": "projects/ng-dynamic-components/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ng-dynamic-components/tsconfig.lib.json",
+              "projects/ng-dynamic-components/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "dynamic-test-app"
+}
