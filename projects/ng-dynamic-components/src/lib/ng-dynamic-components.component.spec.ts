@@ -8,9 +8,8 @@ describe('NgDynamicComponentsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NgDynamicComponentsComponent ]
-    })
-    .compileComponents();
+      declarations: [NgDynamicComponentsComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -23,13 +23,8 @@
             "polyfills": "projects/dynamic-test-app/src/polyfills.ts",
             "tsConfig": "projects/dynamic-test-app/tsconfig.app.json",
             "aot": true,
-            "assets": [
-              "projects/dynamic-test-app/src/favicon.ico",
-              "projects/dynamic-test-app/src/assets"
-            ],
-            "styles": [
-              "projects/dynamic-test-app/src/styles.scss"
-            ],
+            "assets": ["projects/dynamic-test-app/src/favicon.ico", "projects/dynamic-test-app/src/assets"],
+            "styles": ["projects/dynamic-test-app/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -86,13 +81,8 @@
             "polyfills": "projects/dynamic-test-app/src/polyfills.ts",
             "tsConfig": "projects/dynamic-test-app/tsconfig.spec.json",
             "karmaConfig": "projects/dynamic-test-app/karma.conf.js",
-            "assets": [
-              "projects/dynamic-test-app/src/favicon.ico",
-              "projects/dynamic-test-app/src/assets"
-            ],
-            "styles": [
-              "projects/dynamic-test-app/src/styles.scss"
-            ],
+            "assets": ["projects/dynamic-test-app/src/favicon.ico", "projects/dynamic-test-app/src/assets"],
+            "styles": ["projects/dynamic-test-app/src/styles.scss"],
             "scripts": []
           }
         },
@@ -104,9 +94,7 @@
               "projects/dynamic-test-app/tsconfig.spec.json",
               "projects/dynamic-test-app/e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {
@@ -152,13 +140,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "projects/ng-dynamic-components/tsconfig.lib.json",
-              "projects/ng-dynamic-components/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["projects/ng-dynamic-components/tsconfig.lib.json", "projects/ng-dynamic-components/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
