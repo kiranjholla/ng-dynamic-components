@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, Compiler, NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import {
@@ -10,12 +10,14 @@ import {
 
 import { AppComponent } from './app.component';
 import { OneComponent } from './components/one/one.component';
-import { TwoComponent } from './components/two/two.component';
 import { ThreeComponent } from './components/three/three.component';
+import { TwoComponent } from './components/two/two.component';
+
+
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, NgDynamicComponentsModule.withComponents([OneComponent, TwoComponent, ThreeComponent])],
+  imports: [BrowserModule, NgDynamicComponentsModule.withComponents({ OneComponent, TwoComponent, ThreeComponent })],
   providers: [
     {
       provide: APP_INITIALIZER,
