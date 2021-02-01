@@ -27,12 +27,16 @@ export class ComponentOutletComponent implements AfterViewInit, OnChanges, OnDes
   constructor(private registry: ComponentRegistryService) {}
 
   ngAfterViewInit(): void {
-    this.loadComponent();
+    Promise.resolve().then(() => this.loadComponent());
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.componentData) {
-      this.loadComponent();
+    if (changes.componentData && this.loadedComponent) {
+      if (this.loadComponent.name !== changes.componentData.currentValue.name) {
+        this.loadComponent();
+      } else {
+        (this.loadedComponent?.instance as any).componentData = (changes.componentData as any).data;
+      }
     }
   }
 
