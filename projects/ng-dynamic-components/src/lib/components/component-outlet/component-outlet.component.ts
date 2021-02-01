@@ -45,6 +45,7 @@ export class ComponentOutletComponent implements AfterViewInit, OnChanges, OnDes
 
     const component = this.registry.getComponent(this.componentData.name);
     this.loadedComponent = component;
+    (component.instance as any).componentData = this.componentData.data;
     this.outlet.insert(component.hostView);
   }
 
