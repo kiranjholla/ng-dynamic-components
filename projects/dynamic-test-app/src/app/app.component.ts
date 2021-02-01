@@ -9,8 +9,8 @@ import { ComponentData } from 'ng-dynamic-components';
 })
 export class AppComponent {
   comps: ComponentData[] = [
-    { name: 'OneComponent', data: { message: 'Some Message for One' } },
-    { name: 'TwoComponent', data: { message: 'Some Message for Two' } },
-    { name: 'ThreeComponent', data: { message: 'Some Message for Three' } }
+    { name: 'OneComponent', data: { message: 'Some Message for One', times: 1 } },
+    { name: 'TwoComponent', data: { message: 'Some Message for Two', times: 2 } },
+    { name: 'ThreeComponent', data: { message: 'Some Message for Three', times: 3 } }
   ];
 }

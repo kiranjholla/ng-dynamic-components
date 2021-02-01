@@ -1,1 +1,4 @@
-<p>three works! {{ componentData.message }}</p>
+<div class="card">
+  <p>three works! {{ componentData.message }}</p>
+  <p *ngFor="let idx of componentData.times">{{ idx }}</p>
+</div>
