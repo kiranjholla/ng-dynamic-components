@@ -27,6 +27,8 @@ export class ComponentOutletComponent implements AfterViewInit, OnChanges, OnDes
   constructor(private registry: ComponentRegistryService) {}
 
   ngAfterViewInit(): void {
+    // Setting up to load the Component in a Micro-Task to avoid
+    // ExpressionChangedAfterItHasBeenCheckedError
     Promise.resolve().then(() => this.loadComponent());
   }
 
