@@ -1,21 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { Compiler, ComponentFactory, ComponentRef, Inject, Injectable, InjectionToken, Injector, NgModule, Type } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Compiler, ComponentFactory, ComponentRef, Inject, Injectable, InjectionToken, Injector, Type } from '@angular/core';
 
-import { ComponentRegistryItems } from '../models/component-registry-items.model';
+export const DynamicRegistry = new InjectionToken('DYNAMIC_REGISTRY');
 
-export const DynamicComponents = new InjectionToken('DYNAMIC_COMPONENTS');
-
-export function componentRegistryInitializerFactory(
-  componentRegistry: ComponentRegistryService,
-  dynamicComponents: ComponentRegistryItems
-): () => Promise<any> {
-  return () => componentRegistry.initializeRegistry(dynamicComponents);
+export function registryInitializerFactory(componentRegistry: ComponentRegistryService): () => Promise<any> {
+  return () => componentRegistry.initializeRegistry();
 }
 
-export type ComponentRegistryModuleType = Type<any> & {
-  componentsMap: { name: string; component: Type<any> }[];
-};
+export interface ComponentRegistryModuleType<T> extends Type<T> {
+  componentsMap: { [name: string]: Type<any> };
+}
 
 @Injectable()
 export class ComponentRegistryService {
@@ -24,43 +17,30 @@ export class ComponentRegistryService {
   constructor(
     private readonly compiler: Compiler,
     private readonly injector: Injector,
-    @Inject(DynamicComponents) private dynamicComponents: ComponentRegistryItems
+    @Inject(DynamicRegistry)
+    private dynamicRegistry: ComponentRegistryModuleType<any>
   ) {}
 
-  initializeRegistry(components?: ComponentRegistryItems): Promise<any> {
-    const dynamicComponents = components || this.dynamicComponents;
+  initializeRegistry(registry?: ComponentRegistryModuleType<any>): Promise<any> {
+    const dynamicRegistry = registry || this.dynamicRegistry;
 
-    if (Object.keys(dynamicComponents).length) {
-      this.registry = {};
+    return this.compiler.compileModuleAndAllComponentsAsync(dynamicRegistry).then(compiledModule => {
+      const { componentsMap } = compiledModule.ngModuleFactory.moduleType as ComponentRegistryModuleType<any>;
+      compiledModule.componentFactories.forEach(compFactory => {
+        const originalComponentName = Object.keys(componentsMap).find(
+          (compName: string) => componentsMap[compName].name === compFactory.componentType.name
+        );
 
-      const registryModule = NgModule({ imports: [CommonModule, FormsModule], declarations: [...Object.values(dynamicComponents)] })(
-        class ComponentRegistryModule {
-          static componentsMap: { name: string; component: Type<any> }[] = Object.keys(dynamicComponents).map(key => ({
-            name: key,
-            component: dynamicComponents[key]
-          }));
+        if (originalComponentName) {
+          this.registry[originalComponentName] = compFactory;
         }
-      );
-
-      return this.compiler.compileModuleAndAllComponentsAsync(registryModule).then(compiledModule => {
-        compiledModule.componentFactories.forEach(compFactory => {
-          const originalComponentName = (compiledModule.ngModuleFactory.moduleType as ComponentRegistryModuleType).componentsMap?.find(
-            (regItem: { name: string; component: Type<any> }) => regItem.component.name === compFactory.componentType.name
-          )?.name;
-
-          if (originalComponentName) {
-            this.registry[originalComponentName] = compFactory;
-          }
-        });
       });
-    } else {
-      return Promise.resolve();
-    }
+    });
   }
 
   getComponent(componentName: string): ComponentRef<{}> {
     if (!Object.keys(this.registry).length) {
-      throw new Error('Dynamic Component Registry has not been initilized.');
+      throw new Error('Dynamic Component Registry has not been initialized.');
     }
 
     if (this.registry[componentName]) {
