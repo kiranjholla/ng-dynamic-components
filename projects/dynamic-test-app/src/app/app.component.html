@@ -3,6 +3,6 @@
     <div>Here are the dynamic components.</div>
   </div>
   <div id="content">
-    <ndc-component-outlet *ngFor="let comp of comps" [componentData]="comp"></ndc-component-outlet>
+    <ndc-component-outlet *ngFor="let comp of comps" [componentData]="comp" (componentOutput)="logOutput($event)"></ndc-component-outlet>
   </div>
 </div>

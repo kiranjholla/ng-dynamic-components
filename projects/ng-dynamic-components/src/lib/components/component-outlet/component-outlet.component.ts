@@ -2,13 +2,16 @@ import {
   AfterViewInit,
   Component,
   ComponentRef,
+  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
+  Output,
   SimpleChanges,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import { isObservable } from 'rxjs';
 import { ComponentData } from '../../models/component-data.model';
 import { ComponentRegistryService } from '../../services/component-registry.service';
 
@@ -19,6 +22,7 @@ import { ComponentRegistryService } from '../../services/component-registry.serv
 })
 export class ComponentOutletComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() componentData!: ComponentData;
+  @Output() componentOutput = new EventEmitter<any>();
 
   @ViewChild('componentOutlet', { read: ViewContainerRef }) outlet!: ViewContainerRef;
 
@@ -49,10 +53,19 @@ export class ComponentOutletComponent implements AfterViewInit, OnChanges, OnDes
   private loadComponent(): void {
     this.unloadComponent();
 
+    // Construct the Dynamic Component
     const componentRef = this.registry.getComponent(this.componentData.name);
-    // const componentRef = this.outlet.createComponent(componentFactory);
     this.loadedComponent = componentRef;
+
+    // Handle Inputs into the Dynamic Component
     (componentRef.instance as any).componentData = this.componentData.data;
+
+    // Handle Outputs from the Dynamic Component
+    const { componentOutput } = componentRef.instance as any;
+    if (componentOutput && isObservable(componentOutput)) {
+      (componentRef.instance as any).componentOutput.subscribe(this.componentOutput);
+    }
+
     this.outlet.insert(componentRef.hostView);
   }
 
