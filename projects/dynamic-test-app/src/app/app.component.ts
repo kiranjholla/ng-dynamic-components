@@ -13,4 +13,9 @@ export class AppComponent {
     { name: 'TwoComponent', data: { message: 'Some Message for Two', times: [1, 2] } },
     { name: 'ThreeComponent', data: { message: 'Some Message for Three', times: [1, 2, 3] } }
   ];
+
+  logOutput(output: { name: string; value: string }): void {
+    // tslint:disable-next-line: no-console
+    console.info(`Received Output from ${output.name} with value ${output.value}`);
+  }
 }
