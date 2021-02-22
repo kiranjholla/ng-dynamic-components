@@ -7,7 +7,7 @@ import { RegistryModule } from './registry/registry.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, RegistryModule, NgDynamicComponentsModule],
-  providers: [{ provide: DynamicRegistry, useValue: RegistryModule.componentsMap }],
+  providers: [{ provide: DynamicRegistry, useValue: RegistryModule.componentsMap, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
