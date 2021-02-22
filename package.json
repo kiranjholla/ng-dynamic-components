@@ -6,7 +6,7 @@
     "start": "npm run build && npm run server",
     "build": "npm run build-lib && npm run build-app",
     "build-lib": "ng build --prod ng-dynamic-components",
-    "build-app": "ng build --prod --aot=false --buildOptimizer=false",
+    "build-app": "ng build --prod",
     "server": "./node_modules/.bin/http-server -p 4200 ./dist/dynamic-test-app/",
     "test": "ng test",
     "lint": "ng lint",
