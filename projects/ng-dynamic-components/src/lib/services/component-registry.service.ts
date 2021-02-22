@@ -8,23 +8,27 @@ export interface ComponentRegistry {
 
 @Injectable()
 export class ComponentRegistryService {
+  private registry: ComponentRegistry;
+
   constructor(
     private readonly injector: Injector,
     private readonly resolver: ComponentFactoryResolver,
-    @Optional() @Inject(DynamicRegistry) private dynamicRegistry: ComponentRegistry
-  ) {}
+    @Optional() @Inject(DynamicRegistry) private dynamicRegistry: ComponentRegistry[]
+  ) {
+    this.registry = this.dynamicRegistry.reduce((a, x) => ({ ...a, ...x }), {});
+  }
 
   getComponent(componentName: string): ComponentRef<{}> {
-    if (!this.dynamicRegistry) {
+    if (!this.registry) {
       throw new Error('No provider for Dynamic Component Registry.');
     }
 
-    if (!Object.keys(this.dynamicRegistry).length) {
+    if (!Object.keys(this.registry).length) {
       throw new Error('Dynamic Component Registry has not been initialized.');
     }
 
-    if (this.dynamicRegistry[componentName]) {
-      return this.resolver.resolveComponentFactory(this.dynamicRegistry[componentName]).create(this.injector);
+    if (this.registry[componentName]) {
+      return this.resolver.resolveComponentFactory(this.registry[componentName]).create(this.injector);
     } else {
       throw new Error(`Component by name ${componentName} is not registered in the Dynamic Component Registry.`);
     }
