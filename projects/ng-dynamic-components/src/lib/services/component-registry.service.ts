@@ -11,7 +11,7 @@ export class ComponentRegistryService {
   constructor(
     private readonly injector: Injector,
     private readonly resolver: ComponentFactoryResolver,
-    @Inject(DynamicRegistry) private dynamicRegistry: ComponentRegistry
+    @Optional() @Inject(DynamicRegistry) private dynamicRegistry: ComponentRegistry
   ) {}
 
   getComponent(componentName: string): ComponentRef<{}> {

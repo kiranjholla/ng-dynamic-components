@@ -53,20 +53,24 @@ export class ComponentOutletComponent implements AfterViewInit, OnChanges, OnDes
   private loadComponent(): void {
     this.unloadComponent();
 
-    // Construct the Dynamic Component
-    const componentRef = this.registry.getComponent(this.componentData.name);
-    this.loadedComponent = componentRef;
+    try {
+      // Construct the Dynamic Component
+      const componentRef = this.registry.getComponent(this.componentData.name);
+      this.loadedComponent = componentRef;
 
-    // Handle Inputs into the Dynamic Component
-    (componentRef.instance as any).componentData = this.componentData.data;
+      // Handle Inputs into the Dynamic Component
+      (componentRef.instance as any).componentData = this.componentData.data;
 
-    // Handle Outputs from the Dynamic Component
-    const { componentOutput } = componentRef.instance as any;
-    if (componentOutput && isObservable(componentOutput)) {
-      (componentRef.instance as any).componentOutput.subscribe(this.componentOutput);
+      // Handle Outputs from the Dynamic Component
+      const { componentOutput } = componentRef.instance as any;
+      if (componentOutput && isObservable(componentOutput)) {
+        (componentRef.instance as any).componentOutput.subscribe(this.componentOutput);
+      }
+
+      this.outlet.insert(componentRef.hostView);
+    } catch (e) {
+      console.error(`There was an error while instantiating Dynamic Compoment ${this.componentData.name}: ${e}`);
     }
-
-    this.outlet.insert(componentRef.hostView);
   }
 
   private unloadComponent(): void {
